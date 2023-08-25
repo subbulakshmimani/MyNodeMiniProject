@@ -1,0 +1,102 @@
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css">
+
+
+<div class="container py-5 w">
+
+
+    <h1>Edit Details</h1>
+
+    <form method="post" action="/updatedata">
+
+        <!-- Name input -->
+
+        <div class="form-floating mb-3">
+            <input type="text" name="firstname" id="name" class="form-control" />
+            <input type="hidden" name="id" id="user_id" class="form-control">
+            <label class="form-label" for="form4Example1">Name</label>
+
+        </div>
+
+        <!-- Email input -->
+
+        <div class="form-floating mb-3">
+            <input type="email" id="email_id" name="email" class="form-control" />
+            <label class="form-label" for="form4Example2">Email address</label>
+
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text" id="mob_no" name="mobile_no" class="form-control" />
+            <label class="form-label" for="form4Example2">Mobile No</label>
+        
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text" id="user_name"  name="username" class="form-control" />
+            <label class="form-label" for="form4Example2">Username</label>
+        
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text" id="pass_word" name="password" class="form-control" />
+            <label class="form-label" for="form4Example2">Password</label>
+        
+        </div>
+
+
+        <!-- Submit button -->
+
+        <button type="submit" class="w-100 btn btn-lg btn-primary">Update</button>
+
+    </form>
+
+
+</div>
+<script>
+  const id = window.location.pathname.split("/").pop();
+
+    // api url
+    const api_url =`http://localhost:8000/api/v1/editdetails/${id}`;
+
+    getapi(api_url);
+
+    // Defining async function
+    async function getapi(url) {
+        // Storing response
+        const response = await fetch(url);
+        // Storing data in form of JSON
+        var data = await response.json();
+        // console.log(data);
+        // show(data);
+        fetchdata(data);
+    }
+
+    function fetchdata(data){
+    // console.log(data);
+    document.getElementById('name').value = data[0].firstname;
+    document.getElementById('email_id').value = data[0].email;
+    document.getElementById('mob_no').value = data[0].mobile_no;
+    document.getElementById('user_name').value = data[0].username;
+    document.getElementById('pass_word').value = data[0].password;
+    document.getElementById('user_id').value = data[0].id;
+   
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

@@ -1,0 +1,98 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.bootstrap.min.css">
+
+<style>
+    body {
+        margin: 2em;
+    }
+</style>
+<a class="btn btn-success" style="float:left;margin-right:20px;" href="https://codepen.io/collection/XKgNLN/"
+    target="_blank">Other examples on Codepen</a>
+
+    <a href="/logout"><button class="btn btn-primary" style="float: right;margin-bottom: 9px;" type="button">logout</button></a>
+ <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile No</th>
+            <th>Username</th>
+            <th>Password</th>
+            <th>action</th>
+        </tr>
+    </thead>
+    <tbody id="users">
+    </tbody>
+</table>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<!-- <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.colVis.min.js"></script> -->
+<script>
+    $(document).ready(function () {
+        //Only needed for the filename of export files.
+        //Normally set in the title tag of your page.
+        document.title = 'Simple DataTable';
+        // DataTable initialisation
+        $('#example').DataTable(
+            {
+                "dom": '<"dt-buttons"Bf><"clear">lirtp',
+                "paging": true,
+                "autoWidth": true,
+                "buttons": [
+                    'colvis',
+                    'copyHtml5',
+                    'csvHtml5',
+                    'excelHtml5',
+                    'pdfHtml5',
+                    'print'
+                ]
+            }
+        );
+    });
+
+
+    // api url
+    const api_url = "http://localhost:8000/api/v1/registerDetails";
+
+    getapi(api_url);
+
+    // Defining async function
+    async function getapi(url) {
+        // Storing response
+        const response = await fetch(url);
+        // Storing data in form of JSON
+        var data = await response.json();
+        // console.log(data);
+        show(data);
+    }
+
+    function show(data) {
+        const details = data.map((singleData) => {
+            return (
+                `<tr>
+                  <td>${singleData.firstname} </td>
+                  <td>${singleData.email}</td>
+                  <td>${singleData.mobile_no}</td>
+                  <td>${singleData.username}</td>
+                  <td>${singleData.password}</td>      
+                  <td><a class="btn btn-success" href="/fetchuser/${singleData.id}">edit</a>
+                  <a class="btn btn-danger" href="/deleteuser/${singleData.id}">Delete</a></td>
+              </tr>`
+            );
+        }).join('');
+        console.log(details);
+        
+        document.getElementById("users").innerHTML = details;
+    }
+</script>
+   
